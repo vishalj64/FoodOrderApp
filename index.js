@@ -401,270 +401,83 @@ const foodItem= [
 },
 ]
 
-// Logic for items to display on the page
-function displayItems(){
-    var biryani= document.getElementById('biryani');
-    var paneer=  document.getElementById('paneer');;
-    var chicken=  document.getElementById('chicken');
-    var vegetable=  document.getElementById('vegetable');
-    var chinese=  document.getElementById('chinese');
-    var southIndian=  document.getElementById('south-indian');
+function displayItems() {
+    let biryaniElem = document.getElementById("biryani")
+    let chickenElem = document.getElementById("chicken")
+    let paneerElem = document.getElementById("paneer")
+    let vegetableElem = document.getElementById("vegetable")
+    let chineseElem = document.getElementById("chinese")
+    let southIndianElem = document.getElementById("south-indian")
 
-    catList = [biryani,paneer,chicken,vegetable,chinese,southIndian]
+    let catList = [biryaniElem, chickenElem, paneerElem, vegetableElem, chineseElem, southIndianElem]
 
-    const biryaniData= foodItem.filter((item)=>item.category=='biryani');
-    const chickenData= foodItem.filter((item)=>item.category=='chicken');
-    const PaneerData= foodItem.filter((item)=>item.category=='paneer');
-    const vegetableData= foodItem.filter((item)=>item.category=='vegetable');
-    const chineseData= foodItem.filter((item)=>item.category=='chinese');
-    const southData= foodItem.filter((item)=>item.category=='south indian');
-    
+    let biryaniData = foodItem.filter(each => each.category == "biryani")
+    let chickenData = foodItem.filter(each => each.category == "chicken")
+    let paneerData = foodItem.filter(each => each.category == "paneer")
+    let vegData = foodItem.filter(each => each.category == "vegetable")
+    let chineseData = foodItem.filter(each => each.category == "chinese")
+    let southIndianData = foodItem.filter(each => each.category == "south indian")
 
-    [biryaniData,chickenData,PaneerData,vegetableData,chineseData,southData].forEach((foodCategory,idx) => {
-        foodCategory.map(item=>{
-        
-            var itemCard= document.createElement('div');
-            itemCard.setAttribute('id','item-card')
-    
-            var cardTop= document.createElement('div');
-            cardTop.setAttribute('id','card-top');
-    
-            var star= document.createElement('i');
-            star.setAttribute('class','fa fa-star');
-            star.setAttribute('id','rating');
-            star.innerText= ' ' + item.rating;
-    
-            var heart= document.createElement('i');
-            heart.setAttribute('class','fa fa-heart-o add-to-cart');
-            heart.setAttribute('id',item.id)
-    
-            cardTop.appendChild(star);
-            cardTop.appendChild(heart);
-    
-    
-            var img= document.createElement('img');
-            img.src=item.img;
-    
-            var itemName= document.createElement('p');
-            itemName.setAttribute('id','item-name');
-            itemName.innerText= item.name;
-    
-            var itemPrice= document.createElement('p');
-            itemPrice.setAttribute('id','item-price');
-            itemPrice.innerText= 'Price : $ ' + item.price;
-    
-            itemCard.appendChild(cardTop);
-            itemCard.appendChild(img);
-            itemCard.appendChild(itemName);
-            itemCard.appendChild(itemPrice);
-    
-            
-            catList[idx].appendChild(itemCard);
-            
+    let categorisedData = [biryaniData, chickenData, paneerData, vegData, chineseData, southIndianData]
+    // console.log(categorisedData)
+    categorisedData.forEach((foodCategory, ind) => {
+        console.log(foodCategory)
+        foodCategory.map(eachItem => {
+
+            let itemCard = document.createElement("div")
+            itemCard.setAttribute("id", "item-card")
+
+            let cardTop = document.createElement("div")
+            cardTop.setAttribute("id", "card-top")
+
+            let star = document.createElement("i")
+            star.setAttribute("class", "fa fa-star")
+            star.setAttribute("id", "rating")
+            star.innerText = " " + eachItem.rating
+
+            let heart = document.createElement("i")
+            heart.setAttribute("class", "fa fa-heart-o add-to-cart")
+            heart.setAttribute("id", eachItem.id)
+
+            cardTop.appendChild(star)
+            cardTop.appendChild(heart)
+
+            let img = document.createElement("img")
+            img.src = eachItem.img;
+
+            let itemName = document.createElement("p")
+            itemName.setAttribute("id", "item-name")
+            itemName.innerText = eachItem.name
+
+            let itemPrice = document.createElement("p")
+            itemPrice.setAttribute("id", "item-price")
+            itemPrice.innerText = "Price : $ " +eachItem.price
+
+
+            itemCard.appendChild(cardTop)
+            itemCard.appendChild(img)
+            itemCard.appendChild(itemName)
+            itemCard.appendChild(itemPrice)
+
+
+            catList[ind].appendChild(itemCard)
+
+
+
         })
-    });
+    } )
+
 }
-displayItems();
 
-const QuickNavigate= [...new Map(foodItem.map(item=> [item['category'],item])).values()];
-console.log(QuickNavigate);
-// Logic to create navigate List for each category
-function selectTaste(){
-    var categoryList= document.getElementById('category-list');
+function selectTaste() {
 
-    QuickNavigate.map(item=>{
-        console.log(item)
-        var listCard= document.createElement('div');
-        listCard.setAttribute('class','list-card');
-    
-        var listImg= document.createElement('img');
-        listImg.src= item.img;
-    
-        var listName= document.createElement('a');
-        listName.setAttribute('class','list-name');
-        listName.innerText= item.category;
-        listName.setAttribute('href','#'+item.category)
-    
-        listCard.appendChild(listImg);
-        listCard.appendChild(listName);
-
-      
-        categoryList.appendChild(listCard);
-    })
 }
+
 selectTaste();
 
-document.querySelectorAll('.add-to-cart').forEach(item=>{
-    item.addEventListener('click',addToCart)
-})
+displayItems();
 
-var cartData= [];
-function addToCart(){
-    
-    var itemToAdd= this.parentNode.nextSibling.nextSibling.innerText;
-    console.log("this.parentNode.nextSibling.nextSibling.innerText is: "+itemToAdd);
-    var itemObj= foodItem.find(element=>element.name==itemToAdd);
+function addToCart() {
 
-    var index= cartData.indexOf(itemObj);
-    if(index=== -1){
-        document.getElementById(itemObj.id).classList.add('toggle-heart');
-        cartData= [...cartData,itemObj];
-    }
-    else if(index > -1){
-        alert("Added to cart!");
-    }
-    
-    document.getElementById('cart-plus').innerText=
-    ' ' + cartData.length + ' Items';
-    totalAmount();
-    cartItems();
 }
 
-function cartItems(){
-    var tableBody=  document.getElementById('table-body');
-    tableBody.innerHTML= '';
-
-    cartData.map(item=> {
-        var tableRow= document.createElement('tr');
-        
-        var rowData1= document.createElement('td');
-        var img= document.createElement('img');
-        img.src= item.img;
-        rowData1.appendChild(img);
-    
-        var rowData2= document.createElement('td');
-        rowData2.innerText= item.name;
-        
-        var rowData3= document.createElement('td');
-        var btn1= document.createElement('button');
-        btn1.setAttribute('class','decrease-item');
-        btn1.innerText= '-';
-        var span= document.createElement('span');
-        span.innerText= item.quantity;
-        var btn2= document.createElement('button');
-        btn2.setAttribute('class','increase-item');
-        btn2.innerText= '+';
-        
-        rowData3.appendChild(btn1);
-        rowData3.appendChild(span);
-        rowData3.appendChild(btn2);
-    
-        var rowData4= document.createElement('td');
-        rowData4.innerText= item.price;
-    
-        tableRow.appendChild(rowData1);
-        tableRow.appendChild(rowData2);
-        tableRow.appendChild(rowData3);
-        tableRow.appendChild(rowData4);
-    
-        tableBody.appendChild(tableRow);
-    })
-    document.querySelectorAll('.increase-item').forEach(item=>{
-        item.addEventListener('click',incrementItem)
-    })
-
-    document.querySelectorAll('.decrease-item').forEach(item=>{
-        item.addEventListener('click',decrementItem)
-    })
-}
-
-function incrementItem(){
-    let itemToInc= this.parentNode.previousSibling.innerText;
-    console.log(itemToInc)
-    var incObj= cartData.find(element=>element.name==itemToInc);
-    incObj.quantity+=1;
-    
-    currPrice= (incObj.price*incObj.quantity - incObj.price*(incObj.quantity-1))/(incObj.quantity-1);
-    incObj.price= currPrice*incObj.quantity;
-    totalAmount()
-    cartItems();
-}
-
-var currPrice= 0;
-function decrementItem(){
-    let itemToInc= this.parentNode.previousSibling.innerText;
-    let decObj= cartData.find(element=>element.name==itemToInc);
-    let ind= cartData.indexOf(decObj);
-    if(decObj.quantity >1){
-        currPrice= (decObj.price*decObj.quantity - decObj.price*(decObj.quantity-1))/(decObj.quantity);
-        decObj.quantity-= 1;
-        decObj.price= currPrice*decObj.quantity;
-    }
-    else{
-        document.getElementById(decObj.id).classList.remove('toggle-heart')
-        cartData.splice(ind,1);
-        document.getElementById('cart-plus').innerText= ' ' + cartData.length + ' Items';
-        if(cartData.length < 1 && flag){
-            document.getElementById('food-items').classList.toggle('food-items');
-            document.getElementById('category-list').classList.toggle('food-items');
-            document.getElementById('cart-page').classList.toggle('cart-toggle');
-            document.getElementById('checkout').classList.toggle('cart-toggle');
-            flag= false;
-            alert("Currently no item in cart!");
-            console.log(flag)
-        }
-    }
-    totalAmount()
-    cartItems()
-}
-
-function totalAmount(){
-    var sum=0;
-    cartData.map(item=>{
-        sum+= item.price;
-    })
-    document.getElementById('total-item').innerText= 'Total Item : ' + cartData.length;
-    document.getElementById('total-price').innerText= 'Total Price : $ ' + sum;
-}
-
-document.getElementById('cart-plus').addEventListener('click',cartToggle);
-
-var flag= false;
-function cartToggle(){
-    if(cartData.length > 0){
-        document.getElementById('food-items').classList.toggle('food-items');
-        document.getElementById('category-list').classList.toggle('food-items');
-        document.getElementById('cart-page').classList.toggle('cart-toggle');
-        document.getElementById('checkout').classList.toggle('cart-toggle');
-        flag= true;
-        console.log(flag)
-    }
-    else{
-        alert("Currently no item in cart!");
-    }
-}
-
-
-addEvents()
-
-
-function addEvents(){
-    document.querySelectorAll('.add-to-cart').forEach(item=>{
-        item.addEventListener('click',addToCart)
-    });
-    document.querySelectorAll('.increase-item').forEach(item=>{
-        item.addEventListener('click',incrementItem)
-    })
-    document.querySelectorAll('.decrease-item').forEach(item=>{
-        item.addEventListener('click',decrementItem)
-    })
-    document.querySelectorAll('.cart-btn').forEach(item=>{
-        item.addEventListener('click',()=>{
-            cartData=[]
-            alert("Order placed successfully")
-            window.location.reload()
-        })
-    })
-}
-
-document.getElementById('add-address').addEventListener('click',addAddress);
-
-function addAddress(){
-    var address= prompt('Enter your address','');
-    if(address){
-        document.getElementById('add-address').innerText= ' ' + address;
-    }
-    else{
-        alert("Address not added")
-    }
-}
